@@ -4,6 +4,7 @@ import { View, FlatList, ActivityIndicator, StyleSheet, TextInput, Button, Alert
 import TaskItem from '../components/TaskItem';
 import { useTodos } from '../contexts/TaskContext';
 import Task from '../../domain/entities/Task';
+import TitlePage from '../components/TitlePage';
 
 const TaskScreen = () => {
     const { state, toggleComplete, createTask, removeTask } = useTodos();
@@ -15,13 +16,16 @@ const TaskScreen = () => {
 
     return (
         <View style={styles.container}>
-            <View style={{ marginTop: 40}}>
-                <TextInput style={{borderWidth: 1, padding: 10, borderRadius: 8}} value={value} onChangeText={setValue}/>
+            <TitlePage text='Todo App' />
+            <View style={styles.inputContainer}>
+                <TextInput placeholder='Digit your task...' style={styles.input} value={value} onChangeText={setValue}/>
                 <Text style={{ color: '#ff0000'}}>{state.createError}</Text>
-                <Button title='New Task' onPress={() => {
-                    createTask(Task.create(value))
-                    setValue('')
-                }} />
+                <View style={styles.buttonContainer}>
+                    <Button title='Add Task' onPress={() => {
+                        createTask(Task.create(value))
+                        setValue('')
+                    }} />
+                </View>
             </View>
             <FlatList
                 data={state.tasks}
@@ -41,7 +45,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        marginTop: 50
     },
+    inputContainer: {
+        marginTop: 40,
+    },
+    input: {
+        borderWidth: 1, 
+        padding: 10, 
+        borderRadius: 8,
+        borderColor: 'grey'
+    },
+    buttonContainer: {
+        alignSelf: 'flex-end'
+    }
 });
 
 export default TaskScreen;
